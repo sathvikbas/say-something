@@ -1,0 +1,34 @@
+version: '3'
+services:
+  api-service:
+    container_name: api-service
+    build:
+      context: ./api_services
+    volumes:
+      - ./api_services:/app  # Mount local directory to reflect changes
+    ports:
+      - "9090:9090"  # Adjust based on your service
+
+  something-ui:
+    container_name: something-ui
+    build:
+      context: ./say_something_ui
+    volumes:
+      - ./say_something_ui:/app  # Mount local React files for hot reload during development
+      - /app/node_modules  # Ignore node_modules so they're installed in the container
+    ports:
+      - "3000:3000"  # Port for React dev server in development or Nginx in production
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # For hot reloading in some environments
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    volumes:
+      - ollama:/root/.ollama  # Persistent volume for Ollama data
+    ports:
+      - "11434:11434"  # Expose port for Ollama
+    restart: unless-stopped  # Restart policy to keep the container running
+
+volumes:
+  ollama:  # Declare the named volume for Ollama
