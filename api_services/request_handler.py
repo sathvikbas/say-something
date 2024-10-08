@@ -7,12 +7,12 @@ CORS(app)
 
 @app.route("/make_post", methods=['POST'])
 def make_post():
-    print("POST MADE!")
+    print("POST MADE!", flush=True)
     data = request.get_json()
-    print("DATA: ", data)
+    print("DATA: ", data, flush=True)
 
-    llama_response = make_llama_call(data)
-    print("LLAMA RESPONSE: ", llama_response)
+    llama_response = make_llama_call(data['message'])
+    print("LLAMA RESPONSE: ", llama_response, flush=True)
 
     return jsonify({ 'llama_response': llama_response })
 

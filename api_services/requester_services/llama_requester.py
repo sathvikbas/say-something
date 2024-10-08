@@ -8,20 +8,22 @@ llama_stream = False
 def call_llama(prompt):
     url = "http://ollama:11434/api/chat"
     payload = {
-        "model": llama_model,
+        "model": "llama3.2:1b",
         "messages": [
             {
-                "role": llama_role,
-                "content": "Rewrite this post to make it nicer: I hate waiting in line."
+                "role": "user",
+                "content": prompt
             }
         ],
-        "stream": llama_stream
+        "stream": False
     }
 
     response = requests.post(url, json=payload)
 
     print("RESPONSE STATUS CODE: ", response.status_code)
     print("RESPONSE JSON: ", response.json())
+
+    return response.json()
 
 
 # call_llama("Rewrite this post to make it nicer: I hate waiting in line.")
